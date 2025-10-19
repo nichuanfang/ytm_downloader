@@ -3,3 +3,4 @@ dist/
 .venv
 *.exe
 build/
+main.spec
