@@ -1,0 +1,2 @@
+dotenv
+yt-dlp
