@@ -30,8 +30,14 @@ def init_env_file(env_path):
 COOKIES_FILE=music.youtube.com_cookies.txt
 # 处理好的音频存储的目录
 DIST_DIR=dist
-# cookies文件的过期时间(小时)
-COOKIE_FILE_EXPIRE_TIME=1
+# cookies文件的过期时间(分钟)
+COOKIE_FILE_EXPIRE_TIME=20
+# cookiecloud地址
+COOKIE_CLOUD_URL=URL
+# 用户唯一ID
+COOKIE_CLOUD_UUID=UUID
+# 用户key
+COOKIE_CLOUD_KEY=KEY
 """
     with open(env_path, "w", encoding="utf-8") as f:
         f.write(default_content)
@@ -46,9 +52,12 @@ def load_env():
     load_dotenv(env_path)
     cookies_file = os.getenv("COOKIES_FILE")
     dist_dir = os.getenv("DIST_DIR")
-    cookie_expire_hours = float(os.getenv("COOKIE_FILE_EXPIRE_TIME", "1"))
+    cookie_expire_minutes = float(os.getenv("COOKIE_FILE_EXPIRE_TIME", "20"))
     os.makedirs(dist_dir, exist_ok=True)
-    return cookies_file, dist_dir, cookie_expire_hours
+    cookiecloud_url = os.getenv("COOKIE_CLOUD_URL")
+    cookiecloud_uuid = os.getenv("COOKIE_CLOUD_UUID")
+    cookiecloud_key = os.getenv("COOKIE_CLOUD_KEY")
+    return cookies_file, dist_dir, cookie_expire_minutes, cookiecloud_url, cookiecloud_uuid, cookiecloud_key
 
 # ======= 检查 yt-dlp =======
 def check_yt_dlp():
@@ -82,16 +91,18 @@ def check_youtube_connection():
         return False
 
 # ======= 检查 Cookies 文件 =======
-def check_cookies_file(cookies_file, expire_hours):
+def check_cookies_file(cookies_file, expire_minutes=20):
     if not os.path.exists(cookies_file):
-        Logger.error(f"Cookies 文件 {cookies_file} 不存在，请到 https://music.youtube.com 获取并保存。")
+        Logger.error(
+            f"Cookies 文件 {cookies_file} 不存在，请到 https://music.youtube.com 获取并保存。")
         return False
 
     last_modified = os.path.getmtime(cookies_file)
-    expire_time = datetime.fromtimestamp(last_modified) + timedelta(hours=expire_hours)
+    expire_time = datetime.fromtimestamp(
+        last_modified) + timedelta(minutes=expire_minutes)
 
     if datetime.now() > expire_time:
-        Logger.error(f"Cookies 文件已过期（>{expire_hours}小时），请更新后重试。")
+        Logger.warning(f"Cookies 文件已过期（>{expire_minutes}分钟）")
         return False
     Logger.success("Cookies 文件有效")
     return True
@@ -141,8 +152,14 @@ def main():
     # 检查 yt-dlp
     check_yt_dlp()
     
-    cookies_file, dist_dir, cookie_expire_hours = load_env()
-
+    cookies_file, dist_dir, cookie_expire_minutes, cookiecloud_url, cookiecloud_uuid, cookiecloud_key = load_env()
+    
+    # cookiecloud初始化 如果cookiecloud_url是有效URL 将获取cookiecloud服务器上的cookie 写入文件{cookies_file}中
+    from cookiecloud import initCookieCloud,refreshCookie
+    initCookieCloud(cookiecloud_url, cookiecloud_uuid,
+                    cookiecloud_key, cookies_file)
+    Logger.info("✨ cookiecloud初始化完成!")
+    
     while True:
         url = input("\n请输入音乐 URL (或输入 q 退出): ").strip()
         if url.lower() == "q":
@@ -155,9 +172,10 @@ def main():
             continue
 
         # YouTube Music 逻辑
-        if not check_cookies_file(cookies_file, cookie_expire_hours):
-            input("请更新 cookies 文件后按回车继续...")
-            continue
+        if not check_cookies_file(cookies_file, cookie_expire_minutes):
+            refreshCookie(cookiecloud_url, cookiecloud_uuid,
+                            cookiecloud_key, cookies_file)
+            Logger.info("⚡️cookies文件过期,已重新刷新cookie")
 
         Logger.info("开始解析音轨信息，请稍候...")
         formats_url = f'yt-dlp --cookies {cookies_file} --no-playlist -F "{url}"'
