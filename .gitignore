@@ -4,3 +4,4 @@ dist/
 *.exe
 build/
 main.spec
+.env
