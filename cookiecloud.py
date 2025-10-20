@@ -1,10 +1,10 @@
 import datetime
 import os
-from dotenv import load_dotenv
 import json
 from typing import Any, Dict, Union
 from PyCookieCloud import PyCookieCloud
-
+from dotenv import load_dotenv
+from util import Logger,cc_check_cookies_file
 
 def _to_unix_seconds(val) -> int:
     if val is None:
@@ -91,9 +91,7 @@ class CookieCloud:
         self.key = url
         self.cookie_cloud = PyCookieCloud(
             url,uuid, key)
-        if  not self.cookie_cloud.check_connection():
-            print("cookiecloud服务不可用!")
-            raise RuntimeError
+            
             
     def get_the_key(self):
         """获取the_key"""
@@ -108,15 +106,12 @@ class CookieCloud:
         """获取加密数据"""        
         encrypted_data  = self.cookie_cloud.get_the_key()
         if not encrypted_data :
-            print('Failed to get encrypted data')
             return
         return encrypted_data
     
     def get_decrypted_data(self):
         """获取解密数据"""
         decrypted_data = self.cookie_cloud.get_decrypted_data()
-        if not decrypted_data:
-            print('Failed to get decrypted data')
         return decrypted_data
     
     def to_netscape_file(self,  filename:str):
@@ -136,7 +131,8 @@ def initCookieCloud(
         cookiecloud_url: str,
         cookiecloud_uuid, 
         cookiecloud_key, 
-        cookies_file: str
+        cookies_file: str,
+        expire_minutes: str
     ):
     """初始化cookiecloud
 
@@ -152,10 +148,19 @@ def initCookieCloud(
     # cookiecloud对象
     cookieCloud = CookieCloud(cookiecloud_url,cookiecloud_uuid,cookiecloud_key)
     # todo 如果当前目录已存在cookies文件且cookiecloud服务可用 检验是否过期 如果过期则通过cookiecloud调用 
-    
-    # 转为netscape格式的文件
-    return cookieCloud.to_netscape_file(cookies_file)
-    
+    Logger.info("正在检测cookiecloud 网络连接...")
+    if cookieCloud.cookie_cloud.check_connection():
+        Logger.success("Cookiecloud 连接正常 ✅")
+        # 转为netscape格式的文件
+        
+        # 检测是否需要更新
+        if cc_check_cookies_file(cookies_file, expire_minutes):
+            return cookieCloud.to_netscape_file(cookies_file)
+        return True
+    else:
+        Logger.warning("cookiecloud服务不可用 ❌")
+        return False
+
 
 def refreshCookie(
     cookiecloud_url: str,

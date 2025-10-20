@@ -4,25 +4,11 @@ import shutil
 import time
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-import requests  # 新增，用于检测网络
+import requests
+
+from util import Logger, check_cookies_file  # 新增，用于检测网络
 
 os.environ["PYTHONUTF8"] = "1"
-
-# ======= 颜色和日志工具 =======
-class Logger:
-    INFO = "\033[94m[INFO]\033[0m"
-    SUCCESS = "\033[92m[SUCCESS]\033[0m"
-    WARNING = "\033[93m[WARNING]\033[0m"
-    ERROR = "\033[91m[ERROR]\033[0m"
-
-    @staticmethod
-    def info(msg): print(f"{Logger.INFO} {msg}")
-    @staticmethod
-    def success(msg): print(f"{Logger.SUCCESS} {msg}")
-    @staticmethod
-    def warning(msg): print(f"{Logger.WARNING} {msg}")
-    @staticmethod
-    def error(msg): print(f"{Logger.ERROR} {msg}")
 
 # ======= 初始化 .env =======
 def init_env_file(env_path):
@@ -90,23 +76,6 @@ def check_youtube_connection():
         Logger.error(f"无法连接 YouTube，请检查网络或代理设置。\n错误信息: {e}")
         return False
 
-# ======= 检查 Cookies 文件 =======
-def check_cookies_file(cookies_file, expire_minutes=20):
-    if not os.path.exists(cookies_file):
-        Logger.error(
-            f"Cookies 文件 {cookies_file} 不存在，请到 https://music.youtube.com 获取并保存。")
-        return False
-
-    last_modified = os.path.getmtime(cookies_file)
-    expire_time = datetime.fromtimestamp(
-        last_modified) + timedelta(minutes=expire_minutes)
-
-    if datetime.now() > expire_time:
-        Logger.warning(f"Cookies 文件已过期（>{expire_minutes}分钟）")
-        return False
-    Logger.success("Cookies 文件有效")
-    return True
-
 # ======= 执行命令 =======
 def run_command(command):
     result = subprocess.run(command, shell=True, capture_output=True, text=True, encoding="utf-8", errors="ignore")
@@ -157,11 +126,9 @@ def main():
     # cookiecloud初始化 如果cookiecloud_url是有效URL 将获取cookiecloud服务器上的cookie 写入文件{cookies_file}中
     from cookiecloud import initCookieCloud,refreshCookie
     init_res = initCookieCloud(cookiecloud_url, cookiecloud_uuid,
-                    cookiecloud_key, cookies_file)
+                    cookiecloud_key, cookies_file,cookie_expire_minutes)
     if init_res:
-        Logger.info("✨ cookiecloud初始化完成!")
-    else:
-        Logger.warning("cookiecloud服务暂不可用!") 
+        Logger.success("✨ cookiecloud初始化完成!")
     
     while True:
         url = input("\n请输入音乐 URL (或输入 q 退出): ").strip()
@@ -179,7 +146,7 @@ def main():
             if init_res:
                 refreshCookie(cookiecloud_url, cookiecloud_uuid,
                                 cookiecloud_key, cookies_file)
-                Logger.info("⚡️cookies文件过期,已重新刷新cookie")
+                Logger.success("⚡️cookies文件过期,已重新刷新cookie")
             else:
                 choice = input("是否已导出cookies文件？(y/n): ").strip().lower()
                 if choice == "n":
