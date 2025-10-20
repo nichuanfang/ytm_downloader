@@ -54,5 +54,35 @@
 - [ ] n8n和telegram集成
 ---
 
+## 项目目录迁移计划
+
+```
+ytm_downloader/
+├── README.md
+├── .gitignore
+├── requirements.txt
+├── .env.example
+├── .env
+├── temp                             # 临时文件夹
+├── dist                             # 产物目录
+├── main.py                       # 程序入口
+├── util.py                       # 工具函数（日志、文件检查等）
+├── cookiecloud.py                # CookieCloud 相关逻辑
+│   └── .env                      # 运行时配置文件（不纳入版本控制）
+
+├── downloader/                   # 下载相关模块
+│   ├── __init__.py
+│   ├── youtube.py                # YouTube 下载逻辑
+│   └── soundcloud.py             # SoundCloud 下载逻辑
+
+├── services/                     # 第三方服务集成（如 CookieCloud）
+│   ├── __init__.py
+│   └── cookiecloud_service.py    # CookieCloud 封装
+│   └── webdav_service.py          # Webdav 封装
+
+├── logs/                         # 日志文件目录（可选）
+```
+---
+
 ## ❤️ 致谢
 感谢所有贡献者和开源社区的支持！
