@@ -87,8 +87,8 @@ class CookieCloud:
             key (str): 端对端加密密码
         """        
         self.url = url
-        self.uuid = url
-        self.key = url
+        self.uuid = uuid
+        self.key = key
         self.cookie_cloud = PyCookieCloud(
             url,uuid, key)
             
