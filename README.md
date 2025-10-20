@@ -63,8 +63,8 @@ ytm_downloader/
 ├── requirements.txt
 ├── .env.example
 ├── .env
-├── temp                             # 临时文件夹
-├── dist                             # 产物目录
+├── temp                          # 临时文件夹
+├── dist                          # 产物目录
 ├── main.py                       # 程序入口
 ├── util.py                       # 工具函数（日志、文件检查等）
 ├── cookiecloud.py                # CookieCloud 相关逻辑
@@ -78,7 +78,7 @@ ytm_downloader/
 ├── services/                     # 第三方服务集成（如 CookieCloud）
 │   ├── __init__.py
 │   └── cookiecloud_service.py    # CookieCloud 封装
-│   └── webdav_service.py          # Webdav 封装
+│   └── webdav_service.py         # Webdav 封装
 
 ├── logs/                         # 日志文件目录（可选）
 ```
