@@ -51,6 +51,7 @@
 - [ ] 发布到到pypi
 - [ ] 通过GithubAction自动化发布
 - [ ] 多平台支持
+- [ ] n8n和telegram集成
 ---
 
 ## ❤️ 致谢
