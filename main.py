@@ -5,11 +5,11 @@ import time
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import requests
+from util import Logger, check_cookies_file
 
-from util import Logger, check_cookies_file  # 新增，用于检测网络
+# 构建exe可执行文件专用
 
 os.environ["PYTHONUTF8"] = "1"
-
 # ======= 初始化 .env =======
 def init_env_file(env_path):
     default_content = """# cookie文件名
