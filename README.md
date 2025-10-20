@@ -17,7 +17,7 @@
    根据需求修改 `.env` 文件，可参考示例文件 [`.env.example`](https://github.com/nichuanfang/ytm_downloader/blob/main/.env.example)。  
 
 3. **CookieCloud 支持**  
-   如果已安装 [CookieCloud](https://cookiecloud.org)，只需在 `.env` 中设置相关参数，无需手动导出 cookies 文件。  
+   如果已安装 [CookieCloud](https://github.com/easychen/CookieCloud)，只需在 `.env` 中设置相关参数，无需手动导出 cookies 文件。  
 
 4. **开始下载**  
    完成以上步骤后，运行可执行文件，并按命令行提示操作，即可下载音乐。 🎧
@@ -34,7 +34,7 @@
    ```bash
    pip install -r requirements.txt
    ```
-4. 编码完成后构建可执行文件（输出在 `dist/` 目录）：  
+4. 编码完成后构建可执行文件（输出在 `dist/` 目录,可以通过环境变量配置）：  
    ```bash
    pyinstaller --onefile main.py
    ```
@@ -47,12 +47,7 @@
 - SoundCloud 支持
 
 🛠 计划中：
-- 更多酷炫功能即将到来...
-
----
-
-## 📸 截图 & 演示
-*(可在这里放一些工具运行的截图或 GIF 展示)*
+- 更多功能即将到来...
 
 ---
 
