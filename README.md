@@ -46,7 +46,7 @@
 - [x] CookieCloud 集成
 - [x] SoundCloud 支持
 - [ ] webdav集成
-- 更多功能正在开发...
+- [ ] 更多功能正在开发...
 ---
 
 ## ❤️ 致谢
