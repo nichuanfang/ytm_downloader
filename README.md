@@ -46,7 +46,9 @@
 - [x] CookieCloud 集成
 - [x] SoundCloud 支持
 - [ ] webdav集成
-- [ ] 更多功能正在开发...
+- [ ] 发布到到pypi
+- [ ] 通过GithubAction自动化发布
+- [ ] 多平台支持
 ---
 
 ## ❤️ 致谢
