@@ -151,6 +151,8 @@ def initCookieCloud(
         return
     # cookiecloud对象
     cookieCloud = CookieCloud(cookiecloud_url,cookiecloud_uuid,cookiecloud_key)
+    # todo 如果当前目录已存在cookies文件且cookiecloud服务可用 检验是否过期 如果过期则通过cookiecloud调用 
+    
     # 转为netscape格式的文件
     return cookieCloud.to_netscape_file(cookies_file)
     
