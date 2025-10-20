@@ -121,7 +121,15 @@ class CookieCloud:
     
     def to_netscape_file(self,  filename:str):
         """将域名相关的cookie转为netscape格式的文件"""
-        write_netscape_cookiefile(self.get_decrypted_data(),filename)
+        try:
+            decrypted_data = self.get_decrypted_data()
+            if decrypted_data:
+                write_netscape_cookiefile(self.get_decrypted_data(),filename)
+                return True
+            else:
+                return False
+        except:
+            return False
 
 
 def initCookieCloud(
@@ -144,7 +152,7 @@ def initCookieCloud(
     # cookiecloud对象
     cookieCloud = CookieCloud(cookiecloud_url,cookiecloud_uuid,cookiecloud_key)
     # 转为netscape格式的文件
-    cookieCloud.to_netscape_file(cookies_file)
+    return cookieCloud.to_netscape_file(cookies_file)
     
 
 def refreshCookie(
@@ -165,7 +173,7 @@ def refreshCookie(
     cookieCloud = CookieCloud(
         cookiecloud_url, cookiecloud_uuid, cookiecloud_key)
     # 转为netscape格式的文件
-    cookieCloud.to_netscape_file(cookies_file)
+    return cookieCloud.to_netscape_file(cookies_file)
     
 if __name__=='__main__':
     # 测试

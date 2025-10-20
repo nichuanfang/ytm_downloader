@@ -156,9 +156,12 @@ def main():
     
     # cookiecloud初始化 如果cookiecloud_url是有效URL 将获取cookiecloud服务器上的cookie 写入文件{cookies_file}中
     from cookiecloud import initCookieCloud,refreshCookie
-    initCookieCloud(cookiecloud_url, cookiecloud_uuid,
+    init_res = initCookieCloud(cookiecloud_url, cookiecloud_uuid,
                     cookiecloud_key, cookies_file)
-    Logger.info("✨ cookiecloud初始化完成!")
+    if init_res:
+        Logger.info("✨ cookiecloud初始化完成!")
+    else:
+        Logger.warning("cookiecloud服务暂不可用!") 
     
     while True:
         url = input("\n请输入音乐 URL (或输入 q 退出): ").strip()
@@ -173,9 +176,21 @@ def main():
 
         # YouTube Music 逻辑
         if not check_cookies_file(cookies_file, cookie_expire_minutes):
-            refreshCookie(cookiecloud_url, cookiecloud_uuid,
-                            cookiecloud_key, cookies_file)
-            Logger.info("⚡️cookies文件过期,已重新刷新cookie")
+            if init_res:
+                refreshCookie(cookiecloud_url, cookiecloud_uuid,
+                                cookiecloud_key, cookies_file)
+                Logger.info("⚡️cookies文件过期,已重新刷新cookie")
+            else:
+                choice = input("是否已导出cookies文件？(y/n): ").strip().lower()
+                if choice == "n":
+                    Logger.info("已跳过该视频下载。")
+                    continue
+                else:
+                    #检测生成的文件是否存在
+                    if not os.path.exists(cookies_file):
+                        Logger.error("未找到cookie文件,已跳过该视频下载。")
+                        continue
+                    
 
         Logger.info("开始解析音轨信息，请稍候...")
         formats_url = f'yt-dlp --cookies {cookies_file} --no-playlist -F "{url}"'
