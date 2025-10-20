@@ -122,7 +122,7 @@ class CookieCloud:
                 write_netscape_cookiefile(self.get_decrypted_data(),filename)
                 return True
             else:
-                Logger.warning("无法同步cookie,请手动同步一次cookiecloud!")
+                Logger.warning("无法同步cookie,请手动同步一次cookiecloud ⚠️")
                 return False
         except:
             return False
