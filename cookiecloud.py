@@ -104,7 +104,7 @@ class CookieCloud:
     
     def get_encrypted_data(self, arg):
         """获取加密数据"""        
-        encrypted_data  = self.cookie_cloud.get_the_key()
+        encrypted_data  = self.cookie_cloud.get_encrypted_data()
         if not encrypted_data :
             return
         return encrypted_data
