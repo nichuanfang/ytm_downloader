@@ -1,30 +1,60 @@
-Music Downloader For Youtube Premium.
+# 🎵 Music Downloader for **YouTube Premium**
+> 一款简洁高效的音乐下载工具，支持 YouTube Premium & SoundCloud，让你轻松保存喜爱的音频！  
 
-## Prerequisite
+---
 
-1. 本地需要安装3.8以上版本的python
-2. 有**魔法**
+## 🚀 前置条件（Prerequisites）
+- 🐍 **Python** 3.8+（必须安装在本地）
+- 🌍 **魔法上网环境**（用于访问相关服务）
 
-## How to use
-1. 第一次使用,需要打开可执行文件一次以初始化.env以及创建音频存放目录
-2. 用户可以自定义.env中的内容,具体可以参考本项目的[.env.example](https://github.com/nichuanfang/ytm_downloader/blob/main/.env.example)中的配置箱
-3. 如果你已经安装了cookiecloud,可以通过配置.env相应的cookiecloud参数,此后可以无需手动利用插件导出cookies文件
-4. 准备工作都做好之后,点击**可执行文件**根据命令行提示操作
+---
 
-## Developement
+## 📥 使用指南（How to Use）
+1. **首次运行初始化**  
+   直接打开可执行文件，自动生成 `.env` 配置文件并创建音频存放目录。  
+   
+2. **自定义配置**  
+   根据需求修改 `.env` 文件，可参考示例文件 [`.env.example`](https://github.com/nichuanfang/ytm_downloader/blob/main/.env.example)。  
 
-1. fork本项目,克隆到本地
-2. 创建venv虚拟环境
-3. 安装依赖
-    ```python
-    pip install -r requirements.txt
-    ```
-4. 编码完成之后,通过下面的命令构建成可执行文件(位于目录 dist 中)
-    ```python
-    pyinstaller --onefile  main.py
-    ```
-## Plan
+3. **CookieCloud 支持**  
+   如果已安装 [CookieCloud](https://cookiecloud.org)，只需在 `.env` 中设置相关参数，无需手动导出 cookies 文件。  
 
-- [x] Cookiecloud integration
-- [x] Support soundcloud
-- [ ] other cool features is coming...
+4. **开始下载**  
+   完成以上步骤后，运行可执行文件，并按命令行提示操作，即可下载音乐。 🎧
+
+---
+
+## 💻 开发指南（Development）
+1. **Fork & Clone** 项目到本地  
+2. 创建虚拟环境：  
+   ```bash
+   python -m venv venv
+   ```
+3. 安装依赖：  
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. 编码完成后构建可执行文件（输出在 `dist/` 目录）：  
+   ```bash
+   pyinstaller --onefile main.py
+   ```
+
+---
+
+## 📅 项目进度（Plan）
+✅ 已完成：
+- CookieCloud 集成
+- SoundCloud 支持
+
+🛠 计划中：
+- 更多酷炫功能即将到来...
+
+---
+
+## 📸 截图 & 演示
+*(可在这里放一些工具运行的截图或 GIF 展示)*
+
+---
+
+## ❤️ 致谢
+感谢所有贡献者和开源社区的支持！  
