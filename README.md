@@ -45,6 +45,8 @@
 
 - [x] CookieCloud 集成
 - [x] SoundCloud 支持
+- [ ] dns解锁支持
+- [ ] 容器化部署
 - [ ] webdav集成
 - [ ] 发布到到pypi
 - [ ] 通过GithubAction自动化发布
