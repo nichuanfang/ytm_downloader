@@ -49,5 +49,4 @@ def cc_check_cookies_file(cookies_file, expire_minutes=20):
         last_modified) + timedelta(minutes=expire_minutes)
     if datetime.now() > expire_time:
         return True
-    Logger.success("Cookies 文件有效")
     return False
